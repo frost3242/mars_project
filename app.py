@@ -11,24 +11,34 @@ from tensorflow.keras.models import model_from_json
 
 @st.cache_resource
 def load_ser_model():
-    # --- Load and patch model config ---
-    with h5py.File("trained4_model.h5", "r") as f:
-        model_config = f.attrs.get("model_config").decode("utf-8")
-    config_dict = json.loads(model_config)
+    try:
+        # --- Load and patch model config ---
+        with h5py.File("trained4_model.h5", "r") as f:
+            model_config = f.attrs.get("model_config").decode("utf-8")
 
-    # Patch InputLayer to use 'batch_input_shape' instead of 'batch_shape'
-    for layer in config_dict["config"]["layers"]:
-        if layer["class_name"] == "InputLayer":
-            if "batch_shape" in layer["config"]:
-                layer["config"]["batch_input_shape"] = layer["config"].pop("batch_shape")
+        config_dict = json.loads(model_config)
 
-    # Load model from fixed config
-    model = model_from_json(json.dumps(config_dict))
-    model.load_weights("trained4_model.h5")
+        # Patch InputLayer
+        for layer in config_dict["config"]["layers"]:
+            if layer["class_name"] == "InputLayer":
+                if "batch_shape" in layer["config"]:
+                    layer["config"]["batch_input_shape"] = layer["config"].pop("batch_shape")
 
-    # Load class names
-    classes = np.load("classes.npy")
-    return model, classes
+        # Reconstruct and load weights
+        model = model_from_json(json.dumps(config_dict))
+        model.load_weights("trained4_model.h5")
+
+        # Load class names
+        classes = np.load("classes.npy")
+
+        return model, classes
+    except Exception as e:
+        st.error(f"❌ Model loading failed: {e}")
+        return None, None
+
+model, classes = load_ser_model()
+if model is None or classes is None:
+    st.stop()
     
 # ==== Constants ====
 SAMPLE_RATE = 22050
