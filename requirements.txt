@@ -5,5 +5,5 @@ pandas
 scikit-learn
 matplotlib
 seaborn
-tensorflow
+tensorflow==2.12.0
 soundfile
