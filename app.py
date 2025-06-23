@@ -13,7 +13,7 @@ from tensorflow.keras.models import model_from_json
 def load_ser_model():
     try:
         # --- Load and patch model config ---
-        with h5py.File("trained4_model.h5", "r") as f:
+        with h5py.File("trained3_model.h5", "r") as f:
            raw_config = f.attrs.get("model_config")
            model_config = raw_config.decode("utf-8") if isinstance(raw_config, bytes) else raw_config
         
