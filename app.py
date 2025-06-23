@@ -14,8 +14,9 @@ def load_ser_model():
     try:
         # --- Load and patch model config ---
         with h5py.File("trained4_model.h5", "r") as f:
-            model_config = f.attrs.get("model_config").decode("utf-8")
-
+           raw_config = f.attrs.get("model_config")
+           model_config = raw_config.decode("utf-8") if isinstance(raw_config, bytes) else raw_config
+        
         config_dict = json.loads(model_config)
 
         # Patch InputLayer
