@@ -76,7 +76,7 @@ if uploaded_file is not None:
     try:
         features = extract_features(file_path)
         features = features.reshape(1, -1)
-        features = scaler.transform(features)  # for demo only; use training scaler in prod
+        features = scaler.fit_transform(features)  # for demo only; use training scaler in prod
         features = features.reshape(1, MAX_LEN, -1)
         prediction = model.predict(features)
         predicted_class = classes[np.argmax(prediction)]
