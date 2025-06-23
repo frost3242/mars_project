@@ -81,7 +81,7 @@ if uploaded_file is not None:
     try:
         features = extract_features(temp_path)  # (216, ?)
         features = features.reshape(1, -1)
-        features = scaler.transform(features)  # Use pre-fitted scaler
+        features = scaler.fit_transform(features)  # Use pre-fitted scaler
         features = features.reshape(1, MAX_LEN, -1)
         prediction = model.predict(features)
         predicted_class = classes[np.argmax(prediction)]
