@@ -30,7 +30,8 @@ def load_ser_model():
         model.load_weights("trained4_model.h5")
 
         # Load class names
-        classes = np.load("classes.npy")
+        classes = np.load("classes.npy", allow_pickle=True)
+
 
         return model, classes
     except Exception as e:
