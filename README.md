@@ -134,3 +134,11 @@ pip install -r requirements.txt
 ---------Run training script:
 python train_model.py
 
+
+I also have attached the link of the app
+
+------------------streamlit app web app link-
+https://marsproject-7ztswt4rcelufy4bshbbat.streamlit.app
+
+
+
